@@ -1,3 +1,5 @@
+import 'package:chard_flutter/states/StatefulContatos.dart';
+import 'package:chard_flutter/states/StatefulDetalhesContato.dart';
 import 'package:chard_flutter/states/StatefulHome.dart';
 import 'package:chard_flutter/states/StatefulLogin.dart';
 import 'package:chard_flutter/util/util.dart';
@@ -16,20 +18,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp>{
-  static bool estaLogado = false;
-
-  @override
-  void initState() {
-    super.initState();
-    verificaLogado();
-  }
-
-  Future<void> verificaLogado() async {
-    var statusLogado = await Persist.hasToken();
-    setState(() {
-      estaLogado = statusLogado;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +28,16 @@ class MyAppState extends State<MyApp>{
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: ((estaLogado)? 'HomePage' : 'Login'),
+        initialRoute: 'Login',
         routes: {
           'HomePage' : (_) => const StatefulHome(),
-          'Login' : (_) => StatefulLogin()
+          'Login' : (_) => const StatefulLogin(),
+          'Contatos' : (_) => const StatefulContatos(),
+
+          'DetalhesContato' : (context) {
+            var parametry = ModalRoute.of(context)!.settings.arguments as Map;
+            return StatefulDetalhesContato(contato : parametry['contato']);
+          }
         },
       ),
     );

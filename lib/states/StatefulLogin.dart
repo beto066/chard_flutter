@@ -33,7 +33,6 @@ class LoginState extends State<StatefulLogin> {
     );
 
     if (result.hasException) {
-      print(result.exception);
       exception = 'Ocorreu um erro ao realizar o login';
       return;
     }
@@ -51,7 +50,22 @@ class LoginState extends State<StatefulLogin> {
       Navigator.pop(context);
     }
 
-    Navigator.of(context).pushNamed('HomePage');
+    Navigator.of(context).popAndPushNamed('HomePage');
+  }
+
+  Future<void> verificaLogado() async {
+    var statusLogado = await Persist.hasToken();
+
+    if (statusLogado){
+      Navigator.of(context).pushNamedAndRemoveUntil('HomePage', (Route<dynamic> route) => false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    verificaLogado();
+    // Navigator.of(context)
   }
 
   @override
@@ -82,11 +96,11 @@ class LoginState extends State<StatefulLogin> {
                   TextFormField(
                     controller: _email,
                     decoration: const InputDecoration(
-                        hintText: 'Entre com o seu email'
+                        hintText: 'Entre com o seu node de usuário'
                     ),
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return "Ta ficando doido??";
+                        return "Nome de usuário não pode ser vazio";
                       }
                       return null;
                     },
@@ -97,7 +111,7 @@ class LoginState extends State<StatefulLogin> {
                     controller: _senha,
                     obscureText: true,
                     decoration: const InputDecoration(
-                        hintText: 'Entre com a sua   senha'
+                        hintText: 'Entre com a sua senha'
                     ),
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {

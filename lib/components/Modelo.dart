@@ -69,7 +69,7 @@ class ModeloState extends State<Modelo> {
               leading: const Icon(Icons.logout),
               onTap: () {
                 Persist.removeUsuarioLogado();
-                Navigator.of(context).pushNamed('Login').then((value) => widget.setStateParent());
+                Navigator.of(context).pushNamedAndRemoveUntil('Login', (Route<dynamic> route) => false);
               },
             )
           ],
@@ -82,6 +82,19 @@ class ModeloState extends State<Modelo> {
       return const Text("data");
     }
     return const Text("data");
+  }  
+  
+  Future<void> verificaLogado() async {
+    var statusLogado = await Persist.hasToken();
+    if (!statusLogado){
+      Navigator.of(context).pushNamed('Login');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    verificaLogado();
   }
 
   @override

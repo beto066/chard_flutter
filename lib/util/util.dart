@@ -1,4 +1,3 @@
-import 'package:chard_flutter/models/Usuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -35,7 +34,7 @@ abstract class Persist{
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("tokenUsuario");
 
-    if (token == null){
+    if (token == null || token == ''){
       return false;
     }
 
@@ -52,13 +51,22 @@ abstract class Persist{
 class ClientUtil {
   static ValueNotifier<GraphQLClient>? _client;
 
-  static ValueNotifier<GraphQLClient> getGraphqlClient(){
+  static ValueNotifier<GraphQLClient> getGraphqlClient() {
     if (_client == null) {
-      final HttpLink httpLink = HttpLink('http://192.168.63.105:4000/');
+      // final HttpLink httpLink = HttpLink('http://192.168.63.104:4000/');
+      final HttpLink httpLink = HttpLink('http://172.16.106.45:4000/');
+      final AuthLink authLink = AuthLink(
+        getToken:  () async {
+          var token = await Persist.getToken();
+          return 'Bearer $token';
+        }
+      );
+
+      final Link link = authLink.concat(httpLink);
 
       _client = ValueNotifier(
         GraphQLClient(
-          link: httpLink,
+          link: link,
           cache: GraphQLCache(),
         ),
       );
