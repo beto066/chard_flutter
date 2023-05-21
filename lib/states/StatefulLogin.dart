@@ -82,55 +82,55 @@ class LoginState extends State<StatefulLogin> {
           child : Container(
             margin: const EdgeInsets.symmetric(horizontal: 20.0),
             child : Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 40.0),
-                  const CircleAvatar(
-                    radius: 80.0,
-                    backgroundColor: Colors.black12,
-                    child: Icon(Icons.person, color: Colors.grey, size:100.0),
-                  ),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 40.0),
+                const CircleAvatar(
+                  radius: 80.0,
+                  backgroundColor: Colors.black12,
+                  child: Icon(Icons.person, color: Colors.grey, size:100.0),
+                ),
 
-                  const SizedBox(height: 40.0),
-                  TextFormField(
-                    controller: _email,
-                    decoration: const InputDecoration(
-                        hintText: 'Entre com o seu node de usuário'
-                    ),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return "Nome de usuário não pode ser vazio";
-                      }
-                      return null;
-                    },
+                const SizedBox(height: 40.0),
+                TextFormField(
+                  controller: _email,
+                  decoration: const InputDecoration(
+                      hintText: 'Entre com o seu node de usuário'
                   ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Nome de usuário não pode ser vazio";
+                    }
+                    return null;
+                  },
+                ),
 
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: _senha,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        hintText: 'Entre com a sua senha'
-                    ),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return "Digita ai na moral";
-                      }
-                      return null;
-                    },
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _senha,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      hintText: 'Entre com a sua senha'
                   ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Digita ai na moral";
+                    }
+                    return null;
+                  },
+                ),
 
-                  const SizedBox(height: 20.0),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: ElevatedButton(
-                      onPressed: logar,
-                      child: const Text("Logar"),
-                    ),
+                const SizedBox(height: 20.0),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: ElevatedButton(
+                    onPressed: logar,
+                    child: const Text("Logar"),
                   ),
-                  const SizedBox(height: 100.0),
-                ]
+                ),
+                const SizedBox(height: 100.0),
+              ]
             )
           ),
         ),

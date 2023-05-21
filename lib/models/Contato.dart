@@ -7,6 +7,12 @@ class Contato {
 
   Contato(this._id, this._outroUsuario, this._saldo);
 
+  Contato.factory(Map<String, dynamic> contato){
+    _id = contato['id'];
+    _outroUsuario = Usuario.factory(contato['outroUsuario']);
+    _saldo = contato['saldoComUsuario'];
+  }
+
   @override
   String toString() {
     return 'Contato{_id: $_id, _outroUsuario: $_outroUsuario, _saldo: $_saldo}';

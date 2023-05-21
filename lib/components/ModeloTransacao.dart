@@ -13,11 +13,17 @@ class ModeloTransacao extends StatefulWidget {
 }
 
 class ModeloTransacaoState extends State<ModeloTransacao> {
+  void carregaTransacao(){
+    Navigator.of(context).pushNamed('DetalhesTransacao', arguments: {
+      'transacao' : widget.transacao
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-
+        carregaTransacao();
       },
       child: Card(
         shape: RoundedRectangleBorder(

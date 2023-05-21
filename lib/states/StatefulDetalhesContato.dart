@@ -16,10 +16,11 @@ class StatefulDetalhesContato extends StatefulWidget{
 }
 
 class DetalhesContatoState extends State<StatefulDetalhesContato> {
-  Widget builderTransacao(QueryResult<Object?> result){
+  Widget builderTransacoes(QueryResult<Object?> result){
     if (result.isLoading) {
       return const CircularProgressIndicator();
     }
+
     if (result.data == null) {
       return const Text('deu merda');
     }
@@ -62,15 +63,7 @@ class DetalhesContatoState extends State<StatefulDetalhesContato> {
 
         var transacao = result.data!['transacoesComUsuario'][index - 1];
         return ModeloTransacao(
-          transacao: Transacao(
-            transacao['id'],
-            transacao['descricao'],
-            transacao['valor'],
-            DateTime.parse(((transacao['data']) as String).replaceFirst('T', ' ')),
-            null,
-            Usuario(transacao['remetente']['id'],transacao['remetente']['nome'], null,null),
-            Usuario(transacao['destinatario']['id'],transacao['destinatario']['nome'], null,null)
-          ),
+          transacao: Transacao.factory(transacao),
         );
       }
     );
@@ -79,7 +72,7 @@ class DetalhesContatoState extends State<StatefulDetalhesContato> {
   @override
   Widget build(BuildContext context) {
     var query = r'''
-      query Query($idUsuario: Int) {
+      query Query($idUsuario : Int) {
         transacoesComUsuario(idUsuario: $idUsuario) {
           confirmado
           data
@@ -112,7 +105,7 @@ class DetalhesContatoState extends State<StatefulDetalhesContato> {
           fetchPolicy: FetchPolicy.noCache
         ),
         builder: (result, {fetchMore, refetch}){
-          return builderTransacao(result);
+          return builderTransacoes(result);
         }
       )
     );

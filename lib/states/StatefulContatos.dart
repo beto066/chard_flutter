@@ -32,16 +32,7 @@ class ContatoState extends State<StatefulContatos> {
 
             });
           },
-          contato: Contato(
-            contato['id'],
-            Usuario(
-              contato['outroUsuario']['id'],
-              contato['outroUsuario']['nome'],
-              contato['outroUsuario']['email'],
-              null
-            ),
-            contato['saldoComUsuario'] + 0.0
-          )
+          contato: Contato.factory(contato),
         );
       }
     );

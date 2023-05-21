@@ -2,6 +2,8 @@ import 'package:chard_flutter/states/StatefulContatos.dart';
 import 'package:chard_flutter/states/StatefulDetalhesContato.dart';
 import 'package:chard_flutter/states/StatefulHome.dart';
 import 'package:chard_flutter/states/StatefulLogin.dart';
+import 'package:chard_flutter/states/StatefulTransacao.dart';
+import 'package:chard_flutter/states/StatefulTransacoes.dart';
 import 'package:chard_flutter/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -33,10 +35,14 @@ class MyAppState extends State<MyApp>{
           'HomePage' : (_) => const StatefulHome(),
           'Login' : (_) => const StatefulLogin(),
           'Contatos' : (_) => const StatefulContatos(),
-
+          'UltimasTransacoes' : (_) => const StatefulTransacoes(),
           'DetalhesContato' : (context) {
             var parametry = ModalRoute.of(context)!.settings.arguments as Map;
             return StatefulDetalhesContato(contato : parametry['contato']);
+          },
+          'DetalhesTransacao' : (context) {
+            var parametry = ModalRoute.of(context)!.settings.arguments as Map;
+            return StatefulTransacao(transacao: parametry['transacao']);
           }
         },
       ),

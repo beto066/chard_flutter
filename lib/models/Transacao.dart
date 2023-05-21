@@ -11,6 +11,20 @@ class Transacao {
 
   Transacao(this._id, this._descricao, this._valor, this._data, this._confirmado, this._remetente, this._destinatario);
 
+  Transacao.factory(Map<String, dynamic> transacao){
+    id = transacao['id'];
+    descricao = transacao['descricao'];
+    valor = transacao['valor'];
+    data = DateTime.parse(((transacao['data']) as String).replaceFirst('T', ' '));
+    confirmado = transacao['confirmado'];
+    if (transacao['remetente'] != null){
+      remetente = Usuario.factory(transacao['remetente']);
+    }
+    if (transacao['destinatario'] != null){
+      destinatario = Usuario.factory(transacao['destinatario']);
+    }
+  }
+
   @override
   String toString() {
     return 'Transacao{_id: $_id, _descricao: $_descricao, _valor: $_valor, _data: $_data, _emissor: $_remetente, _receptor: $_destinatario, _confirmado: $_confirmado}';

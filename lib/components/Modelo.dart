@@ -1,3 +1,4 @@
+import 'package:chard_flutter/models/Usuario.dart';
 import 'package:chard_flutter/util/util.dart';
 import 'package:flutter/material.dart';
 
@@ -6,15 +7,16 @@ class Modelo extends StatefulWidget {
   final Widget child;
   final Function setStateParent;
   Widget? floatingActionButton;
+  List<Widget>? footerButtons;
 
-  Modelo({super.key, this.title = "CHARD", required this.child, required this.setStateParent, this.floatingActionButton});
+  Modelo({super.key, this.title = "CHARD", required this.child, required this.setStateParent, this.floatingActionButton, this.footerButtons});
 
   @override
   State<StatefulWidget> createState() => ModeloState();
 }
 
 class ModeloState extends State<Modelo> {
-  Widget drawerBuilder(BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot){
+  Widget drawerBuilder(BuildContext context, AsyncSnapshot<Usuario?> snapshot){
     if (snapshot.connectionState == ConnectionState.waiting){
       return const CircularProgressIndicator();
     }
@@ -24,8 +26,8 @@ class ModeloState extends State<Modelo> {
         return ListView(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(snapshot.data!['nome'], textAlign: TextAlign.center),
-              accountEmail: Text(snapshot.data!["email"], textAlign: TextAlign.center),
+              accountName: Text(snapshot.data!.nome!, textAlign: TextAlign.center),
+              accountEmail: Text(snapshot.data!.email!, textAlign: TextAlign.center),
               currentAccountPicture: const CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.person, color: Colors.grey),
@@ -36,7 +38,7 @@ class ModeloState extends State<Modelo> {
               title: const Text('Principal'),
               leading: const Icon(Icons.home),
               onTap: () {
-                Navigator.of(context).pushNamed('HomePage').then((value) => widget.setStateParent());
+                Navigator.of(context).pushNamedAndRemoveUntil('HomePage', (Route<dynamic> route) => route.isFirst).then((value) => widget.setStateParent());
               },
             ),
 
@@ -44,7 +46,7 @@ class ModeloState extends State<Modelo> {
               title: const Text('Contatos'),
               leading: const Icon(Icons.contacts),
               onTap: () {
-                Navigator.of(context).pushNamed('Contatos').then((value) => widget.setStateParent());
+                Navigator.of(context).pushNamedAndRemoveUntil('Contatos', (Route<dynamic> route) => route.isFirst).then((value) => widget.setStateParent());
               },
             ),
             
@@ -52,7 +54,7 @@ class ModeloState extends State<Modelo> {
               title: const Text('Ultimas transações'),
               leading: const Icon(Icons.attach_money),
               onTap: () {
-                Navigator.of(context).pushNamed('UltimasTransacoes').then((value) => widget.setStateParent());
+                Navigator.of(context).pushNamedAndRemoveUntil('UltimasTransacoes', (Route<dynamic> route) => route.isFirst).then((value) => widget.setStateParent());
               },
             ),
 
@@ -113,15 +115,18 @@ class ModeloState extends State<Modelo> {
       ),
       drawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.7,
-        child: FutureBuilder<Map<String, dynamic>?>(
+        child: FutureBuilder<Usuario?>(
           future: user,
           builder: drawerBuilder
         ),
       ),
+
       body: Center(
         child: widget.child
       ),
-      floatingActionButton: widget.floatingActionButton
+      floatingActionButton: widget.floatingActionButton,
+      persistentFooterButtons: widget.footerButtons,
+      persistentFooterAlignment: AlignmentDirectional.center,
     );
   }
 }

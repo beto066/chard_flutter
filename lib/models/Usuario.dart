@@ -6,6 +6,13 @@ class Usuario {
 
   Usuario(this._id, this._nome, this._email, this._perfil);
 
+  Usuario.factory(Map<String, dynamic> user){
+    _id = user['id'];
+    _nome = user['nome'];
+    _email = user['email'];
+    _perfil = user['perfil'];
+  }
+
   @override
   String toString() {
     return 'Usuario{_id: $_id, _nome: $_nome, _email: $_email, _perfil: $_perfil}';
