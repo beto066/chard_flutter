@@ -44,6 +44,23 @@ class TransacaoState extends State<StatefulTransacao> {
         const SizedBox(height: 14.0),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Row(
+            children: [
+              Icon(
+                (widget.transacao.confirmado!)? Icons.check_box_outlined: Icons.check_box_outline_blank,
+                size: 17.0,
+              ),
+              Text(
+                ((widget.transacao.confirmado!)? "Transação já foi confirmada": "A transação ainda não foi confirmada "),
+                style: const TextStyle(fontSize: 15.0)
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 14.0),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30.0),
           child: const Row(
             children: [
               Text(
