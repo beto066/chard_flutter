@@ -1,3 +1,4 @@
+import 'package:chard_flutter/components/FormularioNovaTransacao.dart';
 import 'package:chard_flutter/components/FormularioPesquisaTransacao.dart';
 import 'package:chard_flutter/components/Modelo.dart';
 import 'package:chard_flutter/components/ModeloTransacao.dart';
@@ -13,8 +14,6 @@ class StatefulTransacoes extends StatefulWidget {
 }
 
 class TransacoesState extends State {
-  final GlobalKey<FormState> _chaveAdd = GlobalKey<FormState>();
-
   final TextEditingController _quantController = TextEditingController();
   final TextEditingController _pesquisaController = TextEditingController();
 
@@ -44,19 +43,38 @@ class TransacoesState extends State {
   }
 
   Widget modalPesquisa(BuildContext context) {
-    return FormularioPesquisaTransacao(
-      quantController: quantController,
-      pesquisaController: _pesquisaController,
-      pesquisar: (){
-        setState(() {
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.35,
+        child: FormularioPesquisaTransacao(
+          quantController: quantController,
+          pesquisaController: _pesquisaController,
+          pesquisar: (){
+            setState(() {
 
-        });
-      }
+            });
+          }
+        ),
+      ),
     );
   }
 
   Widget modalAdd(BuildContext context) {
-    return Text('Modal Add');
+    // return Container()
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.55,
+        child: FormularioNovaTransacao(setStateParent: (){setState(() {});}),
+      ),
+    );
+  }
+
+  TextEditingController get quantController {
+    if(_quantController.text.isEmpty){
+      _quantController.text = '10';
+    }
+
+    return _quantController;
   }
 
   @override
@@ -87,6 +105,7 @@ class TransacoesState extends State {
 
         });
       },
+
       title: 'Transações',
       footerButtons: [
         IconButton(
@@ -94,12 +113,14 @@ class TransacoesState extends State {
           icon: const Icon(Icons.search),
           tooltip: 'Pesquisar'
         ),
+
         IconButton(
           onPressed: (){ showModalBottomSheet(context: context, builder: modalAdd); },
           icon: const Icon(Icons.add),
           tooltip: 'Adcionar Transação'
         )
       ],
+
       child: Query(
         options: QueryOptions(
           document: gql(query),
@@ -111,13 +132,5 @@ class TransacoesState extends State {
         }
       )
     );
-  }
-
-  TextEditingController get quantController {
-    if(_quantController.text.isEmpty){
-      _quantController.text = '10';
-    }
-
-    return _quantController;
   }
 }

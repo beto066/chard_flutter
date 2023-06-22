@@ -9,8 +9,12 @@ class Contato {
 
   Contato.factory(Map<String, dynamic> contato){
     _id = contato['id'];
-    _outroUsuario = Usuario.factory(contato['outroUsuario']);
-    _saldo = contato['saldoComUsuario'];
+    if (contato['outroUsuario'] != null) {
+      _outroUsuario = Usuario.factory(contato['outroUsuario']);
+    }
+    if (contato['saldoComUsuario'] != null) {
+      _saldo = 0.0 + contato['saldoComUsuario'];
+    }
   }
 
   @override

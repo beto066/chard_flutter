@@ -1,6 +1,9 @@
+import 'package:chard_flutter/components/ModalNotificacoes.dart';
 import 'package:chard_flutter/models/Usuario.dart';
 import 'package:chard_flutter/util/util.dart';
 import 'package:flutter/material.dart';
+import 'package:chard_flutter/models/Notificacao.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class Modelo extends StatefulWidget {
   final String title;
@@ -16,6 +19,11 @@ class Modelo extends StatefulWidget {
 }
 
 class ModeloState extends State<Modelo> {
+  List<Notficacao> notificacoes = [];
+  List<Notficacao> novasNotificacoes = [];
+  bool haveExceptionNotificacao = false;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   Widget drawerBuilder(BuildContext context, AsyncSnapshot<Usuario?> snapshot){
     if (snapshot.connectionState == ConnectionState.waiting){
       return const CircularProgressIndicator();
@@ -62,7 +70,8 @@ class ModeloState extends State<Modelo> {
               title: const Text('Notificacoes'),
               leading: const Icon(Icons.notifications),
               onTap: (){
-                // Adcionar dps
+                scaffoldKey.currentState?.closeDrawer();
+                showModalNotificacao();
               },
             ),
 
@@ -93,17 +102,94 @@ class ModeloState extends State<Modelo> {
     }
   }
 
+  Future<List<Notficacao>> getNotificacoes() async {
+    var query = r'''
+      query Query {
+        notificacoesUsuario {
+          contato {
+            id
+          }
+          data
+          descricao
+          emissor {
+            nome
+            id
+          }
+          id
+          titulo
+          transacao {
+            id
+          }
+          visualizado
+        }
+      }
+    ''';
+
+    final client = ClientUtil.getGraphqlClient();
+    var result = await client.value.query(QueryOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.noCache
+    ));
+
+    List<Notficacao> list = [];
+
+    if (result.hasException){
+      print(result.exception);
+      haveExceptionNotificacao = true;
+      setState(() {
+
+      });
+      return list;
+    }
+
+    if (result.data == null) {
+      haveExceptionNotificacao = true;
+      setState(() {
+
+      });
+      return list;
+    }
+
+    // print(result.data!['notificacoesUsuario']);
+
+    for (Map<String, dynamic> notificacaoMap in result.data!['notificacoesUsuario']){
+      var notificacao = Notficacao.factory(notificacaoMap);
+      list.add(notificacao);
+    }
+    return list;
+  }
+
   @override
   void initState() {
     super.initState();
-    verificaLogado();
+    verificaLogado().then((value){
+      getNotificacoes().then((value){
+        setState(() {
+          notificacoes = value;
+        });
+      });
+    });
+  }
+
+  void showModalNotificacao() async {
+    setState(() {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return ModalNotificacoes(notificacoes: notificacoes, setStateParent: () => setState(() {}),);
+        },
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var user = Persist.getUsuarioLogado();
-
-    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     scaffoldKey.currentState?.closeDrawer();
 
@@ -112,6 +198,14 @@ class ModeloState extends State<Modelo> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: (){
+              showModalNotificacao();
+            },
+            icon: const Icon(Icons.notifications)
+          )
+        ],
       ),
       drawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.7,

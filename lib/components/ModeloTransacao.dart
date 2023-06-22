@@ -41,18 +41,25 @@ class ModeloTransacaoState extends State<ModeloTransacao> {
               Row(
                 children: [
                   Text(
-                    DateFormat('dd/MM/yyyy').format(widget.transacao.data),
+                    DateFormat('dd/MM/yyyy').format(widget.transacao.data!),
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     )
                   ),
                   Text(
-                      "${widget.transacao.data.hour.toString().padLeft(2, '0')}:${widget.transacao.data.minute.toString().padLeft(2, '0')}",
+                      "${widget.transacao.data!.hour.toString().padLeft(2, '0')}:${widget.transacao.data!.minute.toString().padLeft(2, '0')}",
                       style: const TextStyle(
                           fontSize: 10.0,
                           color: Colors.grey
                       )
+                  ),
+                  Expanded(flex: 1, child: Container()),
+                  Text(
+                    (widget.transacao.confirmado!)? 'confirmado': 'não confirmado',
+                    style: TextStyle(
+                      color: (widget.transacao.confirmado!)?Colors.green : Colors.red,
+                    ),
                   ),
                 ],
               ),
@@ -81,7 +88,7 @@ class ModeloTransacaoState extends State<ModeloTransacao> {
                         width: MediaQuery.of(context).size.width * 0.59,
                         margin: const EdgeInsets.only(right: 4),
                         child: Text(
-                          widget.transacao.descricao,
+                          widget.transacao.descricao!,
                           style: const TextStyle(
                             fontSize: 10.0,
                             color: Colors.grey,
@@ -102,12 +109,12 @@ class ModeloTransacaoState extends State<ModeloTransacao> {
                       builder: (context) {
                         String message = '';
 
-                        if (widget.transacao.valor < 1000){
-                          message = 'R\$${widget.transacao.valor.toStringAsFixed(2)}';
-                        } else if (widget.transacao.valor < 10000){
-                          message = 'R\$${widget.transacao.valor.toStringAsFixed(0)}';
+                        if (widget.transacao.valor! < 1000){
+                          message = 'R\$${widget.transacao.valor!.toStringAsFixed(2)}';
+                        } else if (widget.transacao.valor! < 10000){
+                          message = 'R\$${widget.transacao.valor!.toStringAsFixed(0)}';
                         } else {
-                          message = 'R\$${(widget.transacao.valor / 1000).toStringAsFixed(0)}K';
+                          message = 'R\$${(widget.transacao.valor! / 1000).toStringAsFixed(0)}K';
                         }
 
                         return Text(

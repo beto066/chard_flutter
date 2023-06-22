@@ -36,7 +36,7 @@ class TransacaoState extends State<StatefulTransacao> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
-            "${transacao.remetente!.nome} enviou R\$ ${transacao.valor.toStringAsFixed(2)} para ${transacao.destinatario!.nome}",
+            "${transacao.remetente!.nome} enviou R\$ ${transacao.valor!.toStringAsFixed(2)} para ${transacao.destinatario!.nome}",
             style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
         ),
@@ -44,8 +44,8 @@ class TransacaoState extends State<StatefulTransacao> {
         const SizedBox(height: 14.0),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 'Remetente: ',
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)
@@ -67,8 +67,8 @@ class TransacaoState extends State<StatefulTransacao> {
         const SizedBox(height: 8.0),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 'Destinatário: ',
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)
@@ -90,8 +90,8 @@ class TransacaoState extends State<StatefulTransacao> {
         const SizedBox(height: 8.0),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 'Valor da transação: ',
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
@@ -107,15 +107,15 @@ class TransacaoState extends State<StatefulTransacao> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
-            'R\$ ${transacao.valor.toStringAsFixed(2)}',
+            'R\$ ${transacao.valor!.toStringAsFixed(2)}',
             style: const TextStyle(fontSize: 14.0),
           ),
         ),
         const SizedBox(height: 12.0),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 'Data da transação: ',
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
@@ -133,14 +133,14 @@ class TransacaoState extends State<StatefulTransacao> {
           child: Row(
             children: [
               Text(
-                  DateFormat('dd/MM/yyyy').format(widget.transacao.data),
+                  DateFormat('dd/MM/yyyy').format(widget.transacao.data!),
                   style: const TextStyle(
                     fontSize: 13.0,
                     fontWeight: FontWeight.bold,
                   )
               ),
               Text(
-                " ás ${transacao.data.hour.toString().padLeft(2, '0')}:${transacao.data.minute.toString().padLeft(2, '0')}",
+                " ás ${transacao.data!.hour.toString().padLeft(2, '0')}:${transacao.data!.minute.toString().padLeft(2, '0')}",
                 style: const TextStyle(fontSize: 12.0),
               ),
             ],
@@ -149,8 +149,8 @@ class TransacaoState extends State<StatefulTransacao> {
         const SizedBox(height: 9.0),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 'Descrição da transação: ',
                 style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
@@ -166,7 +166,7 @@ class TransacaoState extends State<StatefulTransacao> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
-            transacao.descricao,
+            transacao.descricao!,
             style: const TextStyle(fontSize: 14.0),
             textAlign: TextAlign.justify,
           ),

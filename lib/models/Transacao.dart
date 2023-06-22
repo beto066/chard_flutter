@@ -1,10 +1,10 @@
 import 'package:chard_flutter/models/Usuario.dart';
 
 class Transacao {
-  late int _id;
-  late String _descricao;
-  late double _valor;
-  late DateTime _data;
+  late int? _id;
+  late String? _descricao;
+  late double? _valor;
+  late DateTime? _data;
   Usuario? _remetente;
   Usuario? _destinatario;
   bool? _confirmado;
@@ -14,12 +14,20 @@ class Transacao {
   Transacao.factory(Map<String, dynamic> transacao){
     id = transacao['id'];
     descricao = transacao['descricao'];
-    valor = transacao['valor'];
-    data = DateTime.parse(((transacao['data']) as String).replaceFirst('T', ' '));
     confirmado = transacao['confirmado'];
+
+    if (transacao['data'] != null) {
+      data = DateTime.parse(((transacao['data']) as String).replaceFirst('T', ' '));
+    }
+
+    if (transacao['valor'] != null) {
+      valor = 0.0 + transacao['valor'];
+    }
+
     if (transacao['remetente'] != null){
       remetente = Usuario.factory(transacao['remetente']);
     }
+
     if (transacao['destinatario'] != null){
       destinatario = Usuario.factory(transacao['destinatario']);
     }
@@ -42,27 +50,27 @@ class Transacao {
     _confirmado = value;
   }
 
-  DateTime get data => _data;
+  DateTime? get data => _data;
 
-  set data(DateTime value) {
+  set data(DateTime? value) {
     _data = value;
   }
 
-  double get valor => _valor;
+  double? get valor => _valor;
 
-  set valor(double value) {
+  set valor(double? value) {
     _valor = value;
   }
 
-  String get descricao => _descricao;
+  String? get descricao => _descricao;
 
-  set descricao(String value) {
+  set descricao(String? value) {
     _descricao = value;
   }
 
-  int get id => _id;
+  int? get id => _id;
 
-  set id(int value) {
+  set id(int? value) {
     _id = value;
   }
 

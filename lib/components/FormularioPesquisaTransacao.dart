@@ -21,7 +21,7 @@ class PesquisaTransacaoState extends State<FormularioPesquisaTransacao> {
       key: _chavePesquisa,
       child: ListView(
         children: [
-          const SizedBox(height: 40.0),
+          const SizedBox(height: 20.0),
           const Text(
             "Pesquisar Transação",
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),

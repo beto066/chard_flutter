@@ -121,6 +121,34 @@ class LoginState extends State<StatefulLogin> {
                   },
                 ),
 
+                const SizedBox(height: 10.0),
+
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Cadastrar',
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.blueAccent,
+                      ),
+                    ),
+                    Text(
+                      ' ou ',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      ),
+                    ),
+                    Text(
+                      'recuperar senha',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.blueAccent,
+                      ),
+                    ),
+                  ],
+                ),
+
                 const SizedBox(height: 20.0),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5.0),
